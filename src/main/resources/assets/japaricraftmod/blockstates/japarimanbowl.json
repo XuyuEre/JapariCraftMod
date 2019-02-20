@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "japaricraftmod:japarimanbowl"
+      "model": "japaricraftmod:block/japarimanbowl"
     }
   }
 }

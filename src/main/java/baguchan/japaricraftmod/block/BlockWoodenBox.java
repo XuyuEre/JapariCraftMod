@@ -1,46 +1,41 @@
 package baguchan.japaricraftmod.block;
 
-import baguchan.japaricraftmod.handler.JapariItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import baguchan.japaricraftmod.init.*;
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.block.state.*;
+import net.minecraft.init.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.world.*;
 
-import java.util.Random;
+import java.util.*;
 
 public class BlockWoodenBox extends Block {
     public BlockWoodenBox() {
-        super(Material.WOOD);
-        setUnlocalizedName("WoodenBox");
-        setHardness(0.2F);
-        setResistance(0.4F);
-        setSoundType(SoundType.WOOD);
+        super(Block.Properties.create(Material.WOOD).hardnessAndResistance(0.5f, 1.5f).sound(SoundType.SNOW).lightValue(0));/*硬さ*/
     }
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        if (rand.nextInt(5) == 0){
-            return Items.APPLE;
-        }
-        else if (rand.nextInt(7) == 0){
+
+    public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune) {
+        if (worldIn.rand.nextInt(5) == 0) {
+            return Items.SUGAR;
+        } else if (worldIn.rand.nextInt(7) == 0) {
             return Items.IRON_NUGGET;
-        }
-        else if (rand.nextInt(10) == 0){
+        } else if (worldIn.rand.nextInt(10) == 0) {
             return Items.GOLD_NUGGET;
-        }
-        else if (rand.nextInt(18) == 0){
-            return Items.GOLDEN_APPLE;
-        }
-        else if (rand.nextInt(25) == 0){
-            return JapariItems.sandstarfragment;
-        }
-        else{
-            return Items.STICK;
+        } else if (worldIn.rand.nextInt(10) == 0) {
+            return JapariItems.JAPARIMAN;
+        } else if (worldIn.rand.nextInt(12) == 0) {
+            return JapariItems.JAPARIMAN_APPLE;
+        } else if (worldIn.rand.nextInt(25) == 0) {
+            return JapariItems.SANDSTAR;
+        } else {
+            return Items.BONE;
         }
     }
-    public int quantityDropped(Random random)
-    {
-        return 4;
+
+    public int getItemsToDropCount(IBlockState state, int fortune, World worldIn, BlockPos pos, Random random) {
+        return 1 + random.nextInt(fortune * 2 + 2);
     }
+
 }

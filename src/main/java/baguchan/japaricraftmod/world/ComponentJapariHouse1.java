@@ -1,49 +1,58 @@
 package baguchan.japaricraftmod.world;
 
-import baguchan.japaricraftmod.handler.JapariBlocks;
-import baguchan.japaricraftmod.handler.JapariTreasure;
-import baguchan.japaricraftmod.handler.ModVillagers;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import baguchan.japaricraftmod.init.*;
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.block.state.*;
+import net.minecraft.init.*;
+import net.minecraft.nbt.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.structure.*;
+import net.minecraft.world.gen.feature.template.*;
+import net.minecraftforge.fml.common.registry.*;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
-public class ComponentJapariHouse1 extends StructureVillagePieces.Village {
+public class ComponentJapariHouse1 extends VillagePieces.Village {
+
+    private int friendsSpawned;
 
     public ComponentJapariHouse1() {
 
     }
 
-    public ComponentJapariHouse1(StructureVillagePieces.Start p_i2107_1_, int p_i2107_2_, Random p_i2106_3_, StructureBoundingBox p_i2106_4_, EnumFacing facing) {
+    public ComponentJapariHouse1(VillagePieces.Start p_i2107_1_, int p_i2107_2_, Random p_i2106_3_, MutableBoundingBox p_i2106_4_, EnumFacing facing) {
         super(p_i2107_1_, p_i2107_2_);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i2106_4_;
     }
 
+    protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+        super.writeStructureToNBT(tagCompound);
+        tagCompound.setInt("FCount", this.friendsSpawned);
+    }
 
+    /**
+     * (abstract) Helper method to read subclass data from NBT
+     */
+    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+        super.readStructureFromNBT(tagCompound, p_143011_2_);
+        this.friendsSpawned = tagCompound.getInt("FCount");
+    }
 
-    public static Object  buildComponent(StructureVillagePieces.Start start, List<StructureComponent> p_175857_1_, Random rand, int p_175857_3_, int p_175857_4_, int p_175857_5_, EnumFacing facing, int p_175857_7_)
-    {
-        StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175857_3_, p_175857_4_, p_175857_5_, 0, 0, 0, 9, 7, 11, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175857_1_, structureboundingbox) == null ? new StructureVillagePieces.Hall(start, p_175857_7_, rand, structureboundingbox, facing) : null;
+    @Override
+    public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_) {
+        return false;
     }
 
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
      * Mineshafts at the end, it adds Fences...
      */
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn) {
         if (this.averageGroundLvl < 0) {
             this.averageGroundLvl = this.getAverageGroundLevel(worldIn, structureBoundingBoxIn);
 
@@ -54,16 +63,16 @@ public class ComponentJapariHouse1 extends StructureVillagePieces.Village {
             this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 7 - 1, 0);
         }
 
-        IBlockState iblockstate = this.getBiomeSpecificBlockState(Blocks.CONCRETE.getDefaultState());
-        IBlockState iblockstate1 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
-        IBlockState iblockstate2 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH));
-        IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST));
-        IBlockState iblockstate4 = this.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState());
-        IBlockState iblockstate5 = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
+        IBlockState iblockstate = this.getBiomeSpecificBlockState(Blocks.ORANGE_CONCRETE_POWDER.getDefaultState());
+        IBlockState iblockstate1 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().with(BlockStairs.FACING, EnumFacing.NORTH));
+        IBlockState iblockstate2 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().with(BlockStairs.FACING, EnumFacing.SOUTH));
+        IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().with(BlockStairs.FACING, EnumFacing.WEST));
+        IBlockState iblockstate4 = this.getBiomeSpecificBlockState(Blocks.OAK_PLANKS.getDefaultState());
+        IBlockState iblockstate5 = this.getBiomeSpecificBlockState(Blocks.OAK_LOG.getDefaultState());
         IBlockState iblockstate6 = this.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState());
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 7, 4, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 2, 1, 6, 8, 4, 10, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
-        this.fillWithBlocks(worldIn, structureBoundingBoxIn, 2, 0, 6, 8, 0, 10, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
+        this.fillWithBlocks(worldIn, structureBoundingBoxIn, 2, 0, 6, 8, 0, 10, Blocks.DIRT.getDefaultState(), Blocks.DIRT.getDefaultState(), false);
         this.setBlockState(worldIn, iblockstate, 6, 0, 6, structureBoundingBoxIn);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 2, 1, 6, 2, 1, 10, iblockstate6, iblockstate6, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 8, 1, 6, 8, 1, 10, iblockstate6, iblockstate6, false);
@@ -103,16 +112,16 @@ public class ComponentJapariHouse1 extends StructureVillagePieces.Village {
         this.setBlockState(worldIn, Blocks.GLASS_PANE.getDefaultState(), 5, 2, 0, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.GLASS_PANE.getDefaultState(), 6, 2, 5, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate6, 2, 1, 3, structureBoundingBoxIn);
-        this.setBlockState(worldIn, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 2, 2, 3, structureBoundingBoxIn);
+        this.setBlockState(worldIn, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 2, 2, 3, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate4, 1, 1, 4, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.BOOKSHELF.getDefaultState(), 1, 2, 4, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.BOOKSHELF.getDefaultState(), 1, 3, 4, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate1, 2, 1, 4, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate3, 1, 1, 3, structureBoundingBoxIn);
-        this.fillWithBlocks(worldIn, structureBoundingBoxIn, 5, 0, 1, 7, 0, 3, Blocks.DOUBLE_STONE_SLAB.getDefaultState(), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), false);
+        this.fillWithBlocks(worldIn, structureBoundingBoxIn, 5, 0, 1, 7, 0, 3, Blocks.SMOOTH_STONE.getDefaultState(), Blocks.SMOOTH_STONE.getDefaultState(), false);
         this.setBlockState(worldIn, Blocks.CRAFTING_TABLE.getDefaultState(), 6, 1, 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.FURNACE.getDefaultState(), 6, 1, 2, structureBoundingBoxIn);
-        this.setBlockState(worldIn, JapariBlocks.Japariman_Bowl.getDefaultState(), 6, 2, 2, structureBoundingBoxIn);
+        //this.setBlockState(worldIn, JapariBlocks.Japariman_Bowl.getDefaultState(), 6, 2, 2, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 1, 0, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 2, 0, structureBoundingBoxIn);
         this.placeTorch(worldIn, EnumFacing.NORTH, 2, 3, 1, structureBoundingBoxIn);
@@ -139,35 +148,78 @@ public class ComponentJapariHouse1 extends StructureVillagePieces.Village {
         }
 
         this.spawnVillagers(worldIn, structureBoundingBoxIn, 4, 1, 2, 2);
+        this.spawnFriends(worldIn, structureBoundingBoxIn, 4, 1, 2, 2);
         this.generateChest(worldIn, structureBoundingBoxIn, randomIn, 7, 1, 1, JapariTreasure.humanhouse);
         return true;
     }
+
+    private void spawnFriends(World worldIn, MutableBoundingBox structureBoundingBoxIn, int x, int y, int z, int count) {
+        if (this.friendsSpawned < count) {
+            for (int i = this.friendsSpawned; i < count; ++i) {
+                int j = this.getXWithOffset(x + i, z);
+                int k = this.getYWithOffset(y);
+                int l = this.getZWithOffset(x + i, z);
+
+                if (!structureBoundingBoxIn.isVecInside(new BlockPos(j, k, l))) {
+                    break;
+                }
+
+                ++this.friendsSpawned;
+
+                /*if (worldIn.rand.nextInt(4) == 0) {
+                    EntityWhiteOwl entityWhiteOwl = new EntityWhiteOwl(worldIn);
+                    entityWhiteOwl.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                    entityWhiteOwl.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityWhiteOwl)), null);
+                    entityWhiteOwl.enablePersistence();
+                    worldIn.spawnEntity(entityWhiteOwl);
+                } else if (worldIn.rand.nextInt(4) == 0) {
+                    EntityBrownOwl entityBrownOwl = new EntityBrownOwl(worldIn);
+                    entityBrownOwl.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                    entityBrownOwl.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityBrownOwl)), null);
+                    entityBrownOwl.enablePersistence();
+                    worldIn.spawnEntity(entityBrownOwl);
+                } else if (worldIn.rand.nextInt(4) == 0) {
+                    EntityShoebill entityfriends = new EntityShoebill(worldIn);
+                    entityfriends.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                    entityfriends.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityfriends)), null);
+                    entityfriends.enablePersistence();
+                    worldIn.spawnEntity(entityfriends);
+                } else {
+                    EntitySquirre entityfriends = new EntitySquirre(worldIn);
+                    entityfriends.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                    entityfriends.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityfriends)), null);
+                    entityfriends.enablePersistence();
+                    worldIn.spawnEntity(entityfriends);
+                }*/
+            }
+        }
+    }
+
     @Override
-    protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession prof)
+    protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof)
     {
         return ModVillagers.japariProfession;
     }
+
     public static class VillageManager implements VillagerRegistry.IVillageCreationHandler
     {
-        @Override
-        public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3,
-                                                             EnumFacing facing, int p5) {
-
-            StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 9, 7, 11, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new ComponentJapariHouse1(startPiece, p5, random, structureboundingbox, facing) : null;
-
-        }
 
         @Override
-        public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
+        public VillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
 
-            return new StructureVillagePieces.PieceWeight(ComponentJapariHouse1.class, 17, MathHelper.getInt(random, i, i + 1));
+            return new VillagePieces.PieceWeight(ComponentJapariHouse1.class, 17, i + random.nextInt(1));
 
         }
         @Override
         public Class<?> getComponentClass()
         {
             return ComponentJapariHouse1.class;
+        }
+
+        @Override
+        public VillagePieces.Village buildComponent(VillagePieces.PieceWeight villagePiece, VillagePieces.Start startPiece, List<StructurePiece> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
+            MutableBoundingBox mutableboundingbox = MutableBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 13, 4, 9, facing);
+            return canVillageGoDeeper(mutableboundingbox) && StructurePiece.findIntersecting(pieces, mutableboundingbox) == null ? new VillagePieces.Field1(startPiece, p5, random, mutableboundingbox, facing) : null;
         }
     }
 }

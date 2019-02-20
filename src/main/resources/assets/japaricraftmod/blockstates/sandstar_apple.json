@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "japaricraftmod:sandstar_apple"
+      "model": "japaricraftmod:block/sandstar_apple"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "japaricraftmod:woodenbox"
+    "": {
+      "model": "japaricraftmod:block/woodenbox"
     }
   }
 }

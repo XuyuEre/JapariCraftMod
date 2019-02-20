@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "japaricraftmod:sandstar_lamp"
+    "": {
+      "model": "japaricraftmod:block/sandstar_lamp"
     }
   }
 }
