@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 
 version = '1.13.2-0.1.0'
 group = 'baguchan.japaricraftmod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'japaricraftmod2'
+archivesBaseName = 'japaricraftmod'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -42,7 +42,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                japaricraftmod {
                     source sourceSets.main
                 }
             }

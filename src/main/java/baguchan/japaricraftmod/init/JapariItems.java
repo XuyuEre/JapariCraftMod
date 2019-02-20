@@ -7,6 +7,8 @@ import net.minecraft.util.*;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.registries.*;
 
+import java.awt.*;
+import java.util.List;
 import java.util.*;
 
 public class JapariItems {
@@ -18,6 +20,7 @@ public class JapariItems {
     public static final Item JAPARIMAN_SANDSTAR = new ItemSandStarJapariman((new Item.Properties()).group(ItemGroup.FOOD));
     public static final Item SANDSTAR = new Item((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item WILDLIBERATION_POTION = new ItemWildLeberationPotion((new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item SPAWNEGG_SERVAL = new ItemSpawnEgg(JapariEntity.SERVAL, Color.ORANGE.getRGB(), Color.BLACK.getRGB(), new Item.Properties().group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -50,12 +53,14 @@ public class JapariItems {
     @SubscribeEvent
     public static void registerItems(IForgeRegistry<Item> registry) {
 
+
         register(registry, JAPARIMAN, "japariman");
         register(registry, JAPARIMAN_APPLE, "japariman_apple");
         register(registry, JAPARIMAN_COCOA, "japariman_cocoa");
         register(registry, JAPARIMAN_SANDSTAR, "japariman_sandstar");
         register(registry, SANDSTAR, "sandstar_fragment");
         register(registry, WILDLIBERATION_POTION, "wildliberation_potion");
+        register(registry, SPAWNEGG_SERVAL, "spawnegg_serval");
     }
 
 }

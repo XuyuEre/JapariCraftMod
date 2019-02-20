@@ -46,6 +46,8 @@ public class JapariCraftMod {
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onLoadComplete);
+
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::onBlocksRegistry);
 
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::onItemsRegistry);
@@ -55,8 +57,6 @@ public class JapariCraftMod {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, this::onTileEntityRegistry);
 
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerRegistry.VillagerProfession.class, this::onVillagerRegistry);
-
-        MinecraftForge.EVENT_BUS.register(this);
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
         // Register ourselves for server, registry and other game events we are interested in
@@ -77,6 +77,10 @@ public class JapariCraftMod {
     }
 
     private void processIMC(final InterModProcessEvent event) {
+
+    }
+
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
 
     }
 

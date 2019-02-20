@@ -1,11 +1,9 @@
 package baguchan.japaricraftmod.advancements;
 
-import baguchan.japaricraftmod.JapariCraftMod;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ResourceLocation;
+import baguchan.japaricraftmod.*;
+import net.minecraft.advancements.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.util.*;
 
 public class AchievementsJapari {
     //1.12.2のメイドの進捗を参考にした
@@ -13,7 +11,7 @@ public class AchievementsJapari {
         if (!(player instanceof EntityPlayerMP))
             return;
 
-        AdvancementManager manager = player.world.getMinecraftServer().getAdvancementManager();
+        AdvancementManager manager = player.world.getServer().getAdvancementManager();
         Advancement advancement = manager.getAdvancement(new ResourceLocation(JapariCraftMod.MODID, "japaricraftmod/" + advancementName));
         if (advancement == null)
             return;
