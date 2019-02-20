@@ -1,0 +1,15 @@
+{
+  "item.japaricraftmod.sandstar_fragment": "サンドスターのかけら",
+  "item.japaricraftmod.japariman": "じゃぱりまん",
+  "item.japaricraftmod.japariman_apple": "じゃぱりまん　りんご味",
+  "item.japaricraftmod.japariman_cocoa": "じゃぱりまん　ここあ味",
+  "item.japaricraftmod.japariman_sandstar": "じゃぱりまん　サンドスター味",
+  "item.japaricraftmod.spawnegg_serval": "SpawnEgg Serval",
+  "block.japaricraftmod.cracked_sandstar": "ひびの入ったサンドスター",
+  "block.japaricraftmod.sandstar_block": "サンドスター",
+  "block.japaricraftmod.woodenbox": "木箱",
+  "block.japaricraftmod.sandstar_lamp": "サンドスターランプ",
+  "block.japaricraftmod.sandstar_portal": "サンドスターの祭壇",
+  "entity.minecraft.villager.zookeeper": "飼育員",
+  "entity.japaricraftmod.serval": "サーバル"
+}
