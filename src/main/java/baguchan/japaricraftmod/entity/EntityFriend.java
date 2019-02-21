@@ -237,22 +237,6 @@ public class EntityFriend extends EntityTameable {
 
     }
 
-
-    @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
-        if (!entityIn.isNonBoss()) {
-            addExperience(2 + rand.nextInt(5));
-        } else {
-            addExperience(1 + rand.nextInt(3));
-        }
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
-        if (flag) {
-            this.applyEnchantments(this, entityIn);
-        }
-
-        return flag;
-    }
-
     public void livingTick() {
         if (this.world.isRemote) {
             this.eattick = Math.max(0, this.eattick - 1);
@@ -447,6 +431,23 @@ public class EntityFriend extends EntityTameable {
         }
 
         return condition;
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
+
+        if (flag) {
+            this.applyEnchantments(this, entityIn);
+
+            if (!entityIn.isNonBoss()) {
+                addExperience(3 + this.rand.nextInt(5));
+            } else {
+                addExperience(1 + this.rand.nextInt(3));
+            }
+        }
+
+        return flag;
     }
 
     /**
