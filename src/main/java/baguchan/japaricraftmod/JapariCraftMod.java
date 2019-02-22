@@ -1,28 +1,32 @@
 package baguchan.japaricraftmod;
 
-import baguchan.japaricraftmod.client.*;
-import baguchan.japaricraftmod.command.*;
-import baguchan.japaricraftmod.init.*;
-import baguchan.japaricraftmod.tileentity.*;
-import baguchan.japaricraftmod.world.structure.*;
-import com.mojang.brigadier.*;
-import net.minecraft.block.*;
-import net.minecraft.command.*;
-import net.minecraft.entity.*;
-import net.minecraft.item.*;
-import net.minecraft.tileentity.*;
-import net.minecraftforge.common.*;
-import net.minecraftforge.event.*;
-import net.minecraftforge.eventbus.api.*;
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.registry.*;
+import baguchan.japaricraftmod.client.JapariRender;
+import baguchan.japaricraftmod.command.CommandJapariLocate;
+import baguchan.japaricraftmod.init.JapariBlocks;
+import baguchan.japaricraftmod.init.JapariEntity;
+import baguchan.japaricraftmod.init.JapariItems;
+import baguchan.japaricraftmod.init.ModVillagers;
+import baguchan.japaricraftmod.tileentity.JapariTileEntity;
+import baguchan.japaricraftmod.world.structure.JapariStructures;
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.block.Block;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.event.lifecycle.*;
-import net.minecraftforge.fml.event.server.*;
-import net.minecraftforge.fml.javafmlmod.*;
-import net.minecraftforge.registries.*;
-import org.apache.logging.log4j.*;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import static baguchan.japaricraftmod.JapariCraftMod.*;
+import static baguchan.japaricraftmod.JapariCraftMod.MODID;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MODID)
@@ -81,7 +85,7 @@ public class JapariCraftMod {
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-
+        JapariEntity.spawnEntity();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

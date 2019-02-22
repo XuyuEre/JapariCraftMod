@@ -1,15 +1,14 @@
 package baguchan.japaricraftmod.client.render;
 
 import baguchan.japaricraftmod.JapariCraftMod;
-import baguchan.japaricraftmod.client.model.ModelServal;
-import baguchan.japaricraftmod.entity.EntityServal;
+import baguchan.japaricraftmod.client.model.ModelKouteiPenguin;
+import baguchan.japaricraftmod.entity.EntityKouteiPenguin;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.model.ModelBiped;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
@@ -21,14 +20,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderServal extends RenderLiving<EntityServal> {
-    private static final ResourceLocation SERVAL_TEXTURES = new ResourceLocation(JapariCraftMod.MODID, "textures/entity/serval/serval.png");
-    private static final ResourceLocation BEG_TEXTURES = new ResourceLocation(JapariCraftMod.MODID, "textures/entity/serval/serval_beg.png");
+public class RenderKouteiPenguin extends RenderLiving<EntityKouteiPenguin> {
+    private static final ResourceLocation TEXTURES = new ResourceLocation(JapariCraftMod.MODID, "textures/entity/ppp1.png");
 
     private float field_205127_a;
 
-    public RenderServal(RenderManager renderManagerIn) {
-        super(renderManagerIn, new ModelServal(), 0.5F);
+    public RenderKouteiPenguin(RenderManager renderManagerIn) {
+        super(renderManagerIn, new ModelKouteiPenguin(), 0.5F);
         this.addLayer(new LayerBipedArmor(this) {
             protected void setModelSlotVisible(ModelBiped p_188359_1_, EntityEquipmentSlot slotIn) {
                 this.setModelVisible(p_188359_1_);
@@ -54,30 +52,16 @@ public class RenderServal extends RenderLiving<EntityServal> {
                 }
             }
 
-            @Override
-            public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-                p_188359_1_();
-                super.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
-
-            }
-
-            /**
-             * 黄昏の森のコードを参考にしている
-             * ここでは装備のメゾットを使って、フレンズの高さに合わせてy軸をいじってる
-             */
-            void p_188359_1_() {
-                GlStateManager.translatef(0.0F, 0.01F, 0.0F);
-            }
         });
         this.addLayer(new LayerHeldItem(this) {
 
             protected void translateToHand(EnumHandSide p_191361_1_) {
-                ((ModelServal) this.livingEntityRenderer.getMainModel()).getArmForSide(p_191361_1_).postRender(0.0625F);
+                ((ModelKouteiPenguin) this.livingEntityRenderer.getMainModel()).getArmForSide(p_191361_1_).postRender(0.0625F);
             }
         });
     }
 
-    protected void applyRotations(EntityServal entityLiving, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void applyRotations(EntityKouteiPenguin entityLiving, float ageInTicks, float rotationYaw, float partialTicks) {
         float f = entityLiving.getSwimAnimation(partialTicks);
         if (entityLiving.isElytraFlying()) {
             super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
@@ -119,16 +103,13 @@ public class RenderServal extends RenderLiving<EntityServal> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityServal entity) {
-        if (entity.isBegging()) {
-            return BEG_TEXTURES;
-        } else {
-            return SERVAL_TEXTURES;
-        }
+    protected ResourceLocation getEntityTexture(EntityKouteiPenguin entity) {
+        return TEXTURES;
+
     }
 
-    public ModelServal getMainModel() {
-        return (ModelServal) super.getMainModel();
+    public ModelKouteiPenguin getMainModel() {
+        return (ModelKouteiPenguin) super.getMainModel();
     }
 
 }
