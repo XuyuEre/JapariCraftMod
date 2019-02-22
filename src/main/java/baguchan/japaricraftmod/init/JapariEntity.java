@@ -8,7 +8,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Set;
@@ -25,12 +24,17 @@ public class JapariEntity {
 
     public static void spawnEntity() {
 
-        Set<Biome> biomes = BiomeDictionary.getBiomes(BiomeDictionary.Type.SAVANNA);
-        if (biomes.size() > 0) {
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                biome.addSpawn(EnumCreatureType.CREATURE, new Biome.SpawnListEntry(SERVAL, 6, 2, 3));
+        Set<Biome> savannabiomes = BiomeDictionary.getBiomes(BiomeDictionary.Type.SAVANNA);
+        for (Biome biome : savannabiomes) {
+            biome.addSpawn(EnumCreatureType.CREATURE, new Biome.SpawnListEntry(SERVAL, 6, 2, 3));
 
-            }
         }
+
+
+        Set<Biome> coldbiomes = BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD);
+        for (Biome biome : coldbiomes) {
+            biome.addSpawn(EnumCreatureType.CREATURE, new Biome.SpawnListEntry(KOUTEI_PENGUIN, 6, 2, 3));
+        }
+
     }
 }

@@ -1,5 +1,9 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/japaricraftmod",
+  "1.13.2": {
+    "0.1.1": "add first swiming friends",
+    "0.1.0": "first alpha release"
+  },
   "1.12.2": {
     "5.1.0": "Fixing and adding AI of flying friends, Added animation when serval and twilight cobolt go attacking",
     "5.0.2": "update zh_cn.lang(YueLengM!)",
