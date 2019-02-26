@@ -1,13 +1,16 @@
 package baguchan.japaricraftmod.world.structure;
 
-import baguchan.japaricraftmod.world.*;
-import baguchan.japaricraftmod.world.structure.config.*;
-import net.minecraft.world.gen.feature.structure.*;
-import net.minecraftforge.fml.common.registry.*;
-import net.minecraftforge.registries.*;
+import baguchan.japaricraftmod.world.ComponentJapariHouse1;
+import baguchan.japaricraftmod.world.structure.config.SandStarLabConfig;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.structure.StructureIO;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Set;
 
 public class JapariStructures {
-
     // Register Structure
     public static void register() {
         StructureIO.getStructureStartName(new SandStarLabStructure.Start());
@@ -23,5 +26,20 @@ public class JapariStructures {
             biome.addStructure(JapariFeature.SANDSTARLAB_STRUCTURE, new SandStarLabConfig(0.0F));
 
         });
+    }
+
+    public static void generate() {
+        for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+            Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(biome);
+            if (types.contains(BiomeDictionary.Type.PLAINS)) {
+
+                if (biome.getStructureConfig(JapariFeature.SANDSTARLAB_STRUCTURE) != null) {
+
+                    biome.addStructure(JapariFeature.SANDSTARLAB_STRUCTURE, new SandStarLabConfig(0.0F));
+
+                }
+
+            }
+        }
     }
 }
