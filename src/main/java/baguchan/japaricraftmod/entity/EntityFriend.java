@@ -1,26 +1,36 @@
 package baguchan.japaricraftmod.entity;
 
-import baguchan.japaricraftmod.*;
-import baguchan.japaricraftmod.init.*;
-import com.google.common.collect.*;
+import baguchan.japaricraftmod.JapariCraftMod;
+import baguchan.japaricraftmod.init.JapariItems;
+import com.google.common.collect.Sets;
 import net.minecraft.entity.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.init.*;
-import net.minecraft.item.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.datasync.*;
-import net.minecraft.util.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.*;
-import net.minecraftforge.api.distmarker.*;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.Particles;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Set;
 
 public class EntityFriend extends EntityTameable {
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
 
     private static final Set<Item> Heal_ITEMS = Sets.newHashSet(JapariItems.JAPARIMAN, JapariItems.JAPARIMAN_APPLE, JapariItems.JAPARIMAN_COCOA);
 
@@ -54,6 +64,7 @@ public class EntityFriend extends EntityTameable {
         super.registerData();
         this.dataManager.register(EntityFriend.dataEXPValue, Float.valueOf(0));
         this.dataManager.register(ATTACKING, Boolean.FALSE);
+        this.dataManager.register(SLEEPING, Boolean.FALSE);
     }
 
     @Override
@@ -65,6 +76,7 @@ public class EntityFriend extends EntityTameable {
         compound.setTag(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, this.getInventoryFriendEquipment().writeInventoryToNBT());
 */
         compound.setFloat(JapariCraftMod.MODID + ":FRIEND_EXP", friendPoint);
+        compound.setBoolean("Sleeping", this.isPlayerSleeping());
     }
 
     @Override
@@ -78,6 +90,7 @@ public class EntityFriend extends EntityTameable {
         friendPoint = compound.getFloat(JapariCraftMod.MODID + ":FRIEND_EXP");
 
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
+        this.setSleeping(compound.getBoolean("Sleeping"));
     }
 
     @Override
@@ -252,6 +265,15 @@ public class EntityFriend extends EntityTameable {
         if (getHealth() < getMaxHealth() / 1.4 && ticksExisted % 20 == 0) {
             //eatJapariman();
         }
+
+        if (this.isPlayerSleeping()) {
+            this.getNavigator().clearPath();
+            if ((this.world.isDaytime() || this.isInWater())) {
+                this.setSleeping(false);
+            }
+        }
+
+
 
 
         if (friendPoint >= 180 && ticksExisted % 5 == 0) {
@@ -493,6 +515,14 @@ public class EntityFriend extends EntityTameable {
 
     public void setAttacking(boolean attacking) {
         this.dataManager.set(ATTACKING, attacking);
+    }
+
+    public boolean isPlayerSleeping() {
+        return this.dataManager.get(SLEEPING);
+    }
+
+    public void setSleeping(boolean sleeping) {
+        this.dataManager.set(SLEEPING, sleeping);
     }
 
     @OnlyIn(Dist.CLIENT)

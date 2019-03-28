@@ -21,11 +21,11 @@ authors="bagu_chan" #optional
 # The modid of the mod
 modId="japaricraftmod" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="0.1.1" #mandatory
+version="0.1.2" #mandatory
  # A display name for the mod
 displayName="JapariCraftMod" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="https://raw.githubusercontent.com/pentantan/JapariCraftMod/master/src/main/japaricraftmod.json" #optional
+updateJSONURL="https://raw.githubusercontent.com/pentantan/JapariCraftMod/1.13/src/main/japaricraftmod.json" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 add KemonoFriend's friendmob and item!
@@ -37,7 +37,7 @@ add KemonoFriend's friendmob and item!
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[25.0.59,)" #mandatory
+    versionRange="[25.0.90,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER

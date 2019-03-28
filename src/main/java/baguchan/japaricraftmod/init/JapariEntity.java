@@ -36,7 +36,7 @@ public class JapariEntity {
 
             if (types.contains(SNOWY) && !types.contains(FOREST) && !types.contains(NETHER) && !biome.getSpawns(EnumCreatureType.CREATURE).isEmpty()) {
 
-                biome.addSpawn(EnumCreatureType.CREATURE, new Biome.SpawnListEntry(KOUTEI_PENGUIN, 6, 2, 3));
+                biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(KOUTEI_PENGUIN, 6, 2, 3));
 
             }
 
@@ -49,7 +49,7 @@ public class JapariEntity {
 
             if (types.contains(SAVANNA) && !types.contains(NETHER) && !biome.getSpawns(EnumCreatureType.CREATURE).isEmpty()) {
 
-                biome.addSpawn(EnumCreatureType.CREATURE, new Biome.SpawnListEntry(SERVAL, 6, 2, 3));
+                biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(SERVAL, 6, 2, 3));
 
             }
 

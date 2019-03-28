@@ -1,19 +1,26 @@
 package baguchan.japaricraftmod.entity;
 
-import baguchan.japaricraftmod.entity.ai.*;
-import baguchan.japaricraftmod.init.*;
-import net.minecraft.entity.*;
+import baguchan.japaricraftmod.entity.ai.EntityAIAttackSweep;
+import baguchan.japaricraftmod.init.JapariEntity;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.init.*;
-import net.minecraft.item.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.datasync.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraftforge.api.distmarker.*;
+import net.minecraft.entity.passive.AbstractGroupFish;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 
 public class EntityServal extends EntityFriend {
@@ -40,12 +47,18 @@ public class EntityServal extends EntityFriend {
         this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(2, new EntityAIAttackSweep(this, 1.16D, true));
         this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(4, new EntityAIFollowOwner(this, 1.1D, 10.0F, 2.0F));
-        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.9D));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this, 1.1D, 10.0F, 2.0F) {
+            @Override
+            public boolean shouldExecute() {
+                return !isPlayerSleeping() && super.shouldExecute();
+            }
+        });
+
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.9D));
         //this.tasks.addTask(7, new EntityAIServalBeg(this, 8.0F));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F, 1.0F));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityCreature.class, 8.0F));
-        this.tasks.addTask(9, new EntityAILookIdle(this));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F, 1.0F));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityCreature.class, 8.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
@@ -63,7 +76,7 @@ public class EntityServal extends EntityFriend {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.29F);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26F);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
@@ -84,6 +97,27 @@ public class EntityServal extends EntityFriend {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readAdditional(compound);
         this.setStretching(compound.getBoolean("Stretching"));
+    }
+
+    public void updateSize() {
+        float f;
+        float f1;
+        if (this.isPlayerSleeping()) {
+            f = 0.2F;
+            f1 = 0.2F;
+        } else {
+            f = 0.6F;
+            f1 = 0.6F;
+        }
+
+        if (f != this.width || f1 != this.height) {
+            AxisAlignedBB axisalignedbb = this.getBoundingBox();
+            axisalignedbb = new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double) f, axisalignedbb.minY + (double) f1, axisalignedbb.minZ + (double) f);
+            if (this.world.isCollisionBoxesEmpty(null, axisalignedbb)) {
+                this.setSize(f, f1);
+            }
+        }
+
     }
 
     @Override
@@ -108,7 +142,7 @@ public class EntityServal extends EntityFriend {
     @Override
     public void livingTick() {
         super.livingTick();
-        if (this.isStretching()) {
+        if (!this.isPlayerSleeping() && this.isStretching()) {
             this.getNavigator().clearPath();
         }
     }

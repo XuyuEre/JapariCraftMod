@@ -2,7 +2,6 @@ package baguchan.japaricraftmod.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,7 +18,7 @@ import net.minecraft.world.World;
 public class EntitySwimFriend extends EntityFriend {
     public EntitySwimFriend(EntityType<?> type, World p_i48574_2_) {
         super(type, p_i48574_2_);
-        this.moveHelper = new EntityKouteiPenguin.MoveHelper(this);
+        this.moveHelper = new EntitySwimFriend.MoveHelper(this);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.stepHeight = 1.0F;
     }
@@ -40,6 +39,13 @@ public class EntitySwimFriend extends EntityFriend {
         return new EntitySwimFriend.PathNavigater(this, worldIn);
     }
 
+    public void tick() {
+        super.tick();
+        this.updateSize();
+    }
+
+    public void updateSize() {
+    }
 
     public void travel(float strafe, float vertical, float forward) {
         if (this.isServerWorld() && this.isInWater()) {
@@ -48,6 +54,10 @@ public class EntitySwimFriend extends EntityFriend {
             this.motionX *= (double) 0.9F;
             this.motionY *= (double) 0.9F;
             this.motionZ *= (double) 0.9F;
+
+            if (this.getAttackTarget() == null) {
+                this.motionY -= 0.003D;
+            }
         } else {
             super.travel(strafe, vertical, forward);
         }
@@ -76,7 +86,7 @@ public class EntitySwimFriend extends EntityFriend {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean shouldExecute() {
-            return !this.entity.isInWater();
+            return !this.entity.isInWater() && super.shouldExecute();
         }
     }
 
@@ -158,7 +168,7 @@ public class EntitySwimFriend extends EntityFriend {
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinueExecuting() {
-            return this.friend.isInWater() && this.timeoutCounter <= 1200 && this.shouldMoveTo(this.friend.world, this.destinationBlock);
+            return this.friend.isInWater() && !this.friend.world.isDaytime() && this.shouldMoveTo(this.friend.world, this.destinationBlock) && this.friend.posY >= (double) (this.friend.world.getSeaLevel() - 3);
         }
 
         /**
@@ -180,18 +190,9 @@ public class EntitySwimFriend extends EntityFriend {
             return this.timeoutCounter % 160 == 0;
         }
 
-        /**
-         * Return true to set given position as destination
-         */
         protected boolean shouldMoveTo(IWorldReaderBase worldIn, BlockPos pos) {
-            Block block = worldIn.getBlockState(pos).getBlock();
-            IBlockState air1 = worldIn.getBlockState(pos.up());
-            IBlockState air2 = worldIn.getBlockState(pos.up(2));
-            if (air1.isAir() && air2.isAir()) {
-                return block == Blocks.AIR;
-            } else {
-                return false;
-            }
+            BlockPos blockpos = pos.up();
+            return (worldIn.isAirBlock(blockpos) && worldIn.isAirBlock(blockpos.up())) && worldIn.getBlockState(pos).isTopSolid();
         }
     }
 
@@ -249,7 +250,7 @@ public class EntitySwimFriend extends EntityFriend {
 
         private void updateSpeed() {
             if (this.swimfriend.isInWater()) {
-                this.swimfriend.motionY += 0.005D;
+                this.swimfriend.motionY += 0.003D;
 
             }
 
@@ -269,10 +270,9 @@ public class EntitySwimFriend extends EntityFriend {
                 float f1 = (float) (this.speed * this.swimfriend.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
 
 
-                this.swimfriend.setAIMoveSpeed(this.swimfriend.getAIMoveSpeed() + (f1 - this.swimfriend.getAIMoveSpeed()) * 0.19F);
+                this.swimfriend.setAIMoveSpeed(this.swimfriend.getAIMoveSpeed() + (f1 - this.swimfriend.getAIMoveSpeed()) * 0.125F);
                 this.swimfriend.motionX += (double) this.swimfriend.getAIMoveSpeed() * d0 * 0.005D;
                 this.swimfriend.motionZ += (double) this.swimfriend.getAIMoveSpeed() * d2 * 0.005D;
-
                 this.swimfriend.motionY += (double) this.swimfriend.getAIMoveSpeed() * d1 * 0.1D;
             } else {
                 super.tick();

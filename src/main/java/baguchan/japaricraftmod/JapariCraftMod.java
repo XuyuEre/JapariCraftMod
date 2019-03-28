@@ -1,16 +1,13 @@
 package baguchan.japaricraftmod;
 
 import baguchan.japaricraftmod.client.JapariRender;
-import baguchan.japaricraftmod.command.CommandJapariLocate;
 import baguchan.japaricraftmod.init.JapariBlocks;
 import baguchan.japaricraftmod.init.JapariEntity;
 import baguchan.japaricraftmod.init.JapariItems;
 import baguchan.japaricraftmod.init.ModVillagers;
 import baguchan.japaricraftmod.tileentity.JapariTileEntity;
 import baguchan.japaricraftmod.world.structure.JapariStructures;
-import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -91,13 +88,13 @@ public class JapariCraftMod {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-
+/*
         JapariStructures.generate();
 
 
         CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
 
-        CommandJapariLocate.register(dispatcher);
+        CommandJapariLocate.register(dispatcher);*/
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD event bus

@@ -91,6 +91,9 @@ public class RenderKouteiPenguin extends RenderLiving<EntityKouteiPenguin> {
                 this.field_205127_a = f3;
                 GlStateManager.translatef(0.0F, -1.0F, 0.3F);
             }
+        } else if (entityLiving.isPlayerSleeping()) {
+            super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
+            GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
         } else {
             super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
         }
