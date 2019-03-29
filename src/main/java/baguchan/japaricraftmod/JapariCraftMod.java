@@ -60,6 +60,8 @@ public class JapariCraftMod {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerRegistry.VillagerProfession.class, this::onVillagerRegistry);
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+
+        /*ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getGui);*/
         // Register ourselves for server, registry and other game events we are interested in
 
     }

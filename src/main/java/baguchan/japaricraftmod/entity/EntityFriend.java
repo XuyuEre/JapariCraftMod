@@ -1,8 +1,13 @@
 package baguchan.japaricraftmod.entity;
 
 import baguchan.japaricraftmod.JapariCraftMod;
+import baguchan.japaricraftmod.gui.FriendInventoryGui;
+import baguchan.japaricraftmod.gui.FriendMobNBTs;
+import baguchan.japaricraftmod.gui.InventoryFriendEquipment;
+import baguchan.japaricraftmod.gui.InventoryFriendMain;
 import baguchan.japaricraftmod.init.JapariItems;
 import com.google.common.collect.Sets;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -11,7 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.Particles;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,8 +44,12 @@ public class EntityFriend extends EntityTameable {
 
     protected static final DataParameter<Float> dataEXPValue = EntityDataManager.createKey(EntityFriend.class, DataSerializers.FLOAT);
 
+
     public float friendPoint = 0;
     private int eattick = 0;
+
+    private InventoryFriendMain inventoryFriendMain;
+    private InventoryFriendEquipment inventoryFriendEquipment;
 
     public EntityFriend(EntityType<?> type, World p_i48574_2_) {
         super(type, p_i48574_2_);
@@ -75,6 +87,9 @@ public class EntityFriend extends EntityTameable {
 
         compound.setTag(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, this.getInventoryFriendEquipment().writeInventoryToNBT());
 */
+        compound.setTag(FriendMobNBTs.ENTITY_FRIEND_INVENTORY, this.getInventoryFriendMain().writeInventoryToNBT());
+        compound.setTag(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, this.getInventoryFriendEquipment().writeInventoryToNBT());
+
         compound.setFloat(JapariCraftMod.MODID + ":FRIEND_EXP", friendPoint);
         compound.setBoolean("Sleeping", this.isPlayerSleeping());
     }
@@ -87,6 +102,9 @@ public class EntityFriend extends EntityTameable {
 
         this.getInventoryFriendEquipment().readInventoryFromNBT(compound.getTagList(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, 10));
 */
+        this.getInventoryFriendMain().readInventoryFromNBT(compound.getList(FriendMobNBTs.ENTITY_FRIEND_INVENTORY, 10));
+        this.getInventoryFriendEquipment().readInventoryFromNBT(compound.getList(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, 10));
+
         friendPoint = compound.getFloat(JapariCraftMod.MODID + ":FRIEND_EXP");
 
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
@@ -115,7 +133,7 @@ public class EntityFriend extends EntityTameable {
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
     }
 
-    /*@Override
+    @Override
     public void damageArmor(float pDamage) {
         pDamage = Math.max(pDamage / 4, 1);
 
@@ -131,7 +149,7 @@ public class EntityFriend extends EntityTameable {
         if (inventoryFriendEquipment.getLegItem() != null && inventoryFriendEquipment.getLegItem().getItem() instanceof ItemArmor) {
             inventoryFriendEquipment.getLegItem().damageItem((int) pDamage, this);
         }
-    }*/
+    }
 
     /*
      * 右クリック時の処理
@@ -187,16 +205,16 @@ public class EntityFriend extends EntityTameable {
                     }
                 }
             }
-          /*  if (player.isSneaking() && !this.isSitting()) {
+            if (player.isSneaking() && !this.isSitting()) {
 
-                //player.openGui(JapariCraftMod.instance, JapariCraftMod.ID_JAPARI_INVENTORY, this.getEntityWorld(), this.getEntityId(), 0, 0);
+                Minecraft.getInstance().displayGuiScreen(new FriendInventoryGui(player, this));
                 if (!this.world.isRemote) {
 
                     this.aiSit.setSitting(!this.isSitting());
                 }
 
                 return true;
-            }*/
+            }
 
             if (this.isOwner(player) && !this.world.isRemote) {
 
@@ -263,7 +281,7 @@ public class EntityFriend extends EntityTameable {
         }
         //やばい時はじゃぱりまんを食べる
         if (getHealth() < getMaxHealth() / 1.4 && ticksExisted % 20 == 0) {
-            //eatJapariman();
+            eatJapariman();
         }
 
         if (this.isPlayerSleeping()) {
@@ -286,7 +304,7 @@ public class EntityFriend extends EntityTameable {
     }
 
     //インベントリにじゃぱりまんがあるか確認する処理
-   /* private void eatJapariman() {
+    private void eatJapariman() {
         ItemStack itemstack = findFood();
 
         if (!itemstack.isEmpty()) {
@@ -297,12 +315,12 @@ public class EntityFriend extends EntityTameable {
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             this.eattick = 20;
         }
-    }*/
+    }
 
     /**
      * インベントリ内の食べれる食べ物を探す.
      */
-   /* private ItemStack findFood() {
+    private ItemStack findFood() {
         ItemStack friendsstack;
 
         for (int i = 0; i < this.getInventoryFriendMain().getSizeInventory(); ++i) {
@@ -313,7 +331,7 @@ public class EntityFriend extends EntityTameable {
             }
         }
         return ItemStack.EMPTY;
-    }*/
+    }
 
     //フレンズを回復できるアイテムをここで指定
     public boolean isHealItem(ItemStack stack) {
@@ -345,16 +363,15 @@ public class EntityFriend extends EntityTameable {
         }
     }*/
 
-   /* public ItemStack onItemStackPickup(ItemStack stack) {
+    public ItemStack onItemStackPickup(ItemStack stack) {
         return getInventoryFriendMain().addItem(stack);
-    }*/
+    }
 
     protected void playPickupSound() {
         playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.25F, 0.85F);
     }
 
-
-   /* public InventoryFriendMain getInventoryFriendMain() {
+    public InventoryFriendMain getInventoryFriendMain() {
         if (this.inventoryFriendMain == null) {
             this.inventoryFriendMain = new InventoryFriendMain(this);
         }
@@ -368,74 +385,82 @@ public class EntityFriend extends EntityTameable {
         }
 
         return this.inventoryFriendEquipment;
-    }*/
+    }
 
-    /*@Override
+
+    @Override
     public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
         ItemStack itemStack;
 
         switch (slotIn) {
             case CHEST:
-
                 itemStack = this.getInventoryFriendEquipment().getChestItem();
+
                 break;
             case FEET:
-
                 itemStack = this.getInventoryFriendEquipment().getbootItem();
+
                 break;
             case HEAD:
 
                 itemStack = this.getInventoryFriendEquipment().getheadItem();
+
                 break;
             case LEGS:
 
                 itemStack = this.getInventoryFriendEquipment().getLegItem();
+
                 break;
             default:
-
                 itemStack = ItemStack.EMPTY;
+
                 break;
         }
 
-        return itemStack;
-    }*/
 
-   /* @Override
+        return itemStack;
+
+    }
+
+
+    @Override
     public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
         switch (slotIn) {
-
             case CHEST:
 
                 this.getInventoryFriendEquipment().setInventorySlotContents(0, stack);
+
                 break;
             case FEET:
 
                 this.getInventoryFriendEquipment().setInventorySlotContents(1, stack);
+
                 break;
             case HEAD:
-
                 this.getInventoryFriendEquipment().setInventorySlotContents(2, stack);
+
                 break;
             case LEGS:
-
                 this.getInventoryFriendEquipment().setInventorySlotContents(3, stack);
+
                 break;
         }
-    }*/
+    }
 
     //死んだ時に持ってるアイテム落とす
     @Override
     public void onDeath(DamageSource cause) {
         World world = this.getEntityWorld();
 
-        /*if (!world.isRemote) {
+        if (!world.isRemote) {
             InventoryHelper.dropInventoryItems(world, this, this.getInventoryFriendMain());
 
             InventoryHelper.dropInventoryItems(world, this, this.getInventoryFriendEquipment());
-        }*/
+        }
 
         super.onDeath(cause);
     }
+
 
     //ここから下は体力バーの表示方法
     public EntityFriend.Condition getCondition() {
