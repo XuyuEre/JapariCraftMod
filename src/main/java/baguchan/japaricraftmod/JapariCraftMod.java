@@ -1,10 +1,12 @@
 package baguchan.japaricraftmod;
 
-import baguchan.japaricraftmod.client.JapariRender;
 import baguchan.japaricraftmod.init.JapariBlocks;
 import baguchan.japaricraftmod.init.JapariEntity;
 import baguchan.japaricraftmod.init.JapariItems;
 import baguchan.japaricraftmod.init.ModVillagers;
+import baguchan.japaricraftmod.proxy.ClientProxy;
+import baguchan.japaricraftmod.proxy.CommonProxy;
+import baguchan.japaricraftmod.proxy.ServerProxy;
 import baguchan.japaricraftmod.tileentity.JapariTileEntity;
 import baguchan.japaricraftmod.world.structure.JapariStructures;
 import net.minecraft.block.Block;
@@ -14,9 +16,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -33,10 +39,12 @@ public class JapariCraftMod {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static JapariCraftMod instance;
-
+    public static CommonProxy PROXY;
 
     public JapariCraftMod() {
         instance = this;
+
+        PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -44,8 +52,6 @@ public class JapariCraftMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onLoadComplete);
 
@@ -68,11 +74,6 @@ public class JapariCraftMod {
 
     private void setup(final FMLCommonSetupEvent event) {
         JapariStructures.register();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        JapariTileEntity.tileModel();
-        JapariRender.entityRender();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

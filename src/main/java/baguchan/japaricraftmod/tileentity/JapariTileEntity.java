@@ -1,12 +1,12 @@
 package baguchan.japaricraftmod.tileentity;
 
-import baguchan.japaricraftmod.client.render.tileentity.*;
-import baguchan.japaricraftmod.init.*;
-import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.tileentity.*;
-import net.minecraftforge.api.distmarker.*;
-import net.minecraftforge.fml.client.registry.*;
-import net.minecraftforge.registries.*;
+import baguchan.japaricraftmod.client.render.tileentity.RenderSandStarPortal;
+import baguchan.japaricraftmod.init.JapariBlocks;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class JapariTileEntity {
     public static TileEntityType<TileEntitySandStarPortal> tileSandStarPortal;
@@ -18,7 +18,7 @@ public class JapariTileEntity {
     @OnlyIn(Dist.CLIENT)
     public static void tileModel() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySandStarPortal.class, new RenderSandStarPortal());
-        TileEntityRendererDispatcher.instance.renderAsItem(new TileEntitySandStarPortal());
+        //TileEntityItemStackRenderer.instance.renderByItem(new TileEntitySandStarPortal());
 
     }
 }

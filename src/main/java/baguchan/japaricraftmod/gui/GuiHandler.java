@@ -1,38 +1,33 @@
 package baguchan.japaricraftmod.gui;
 
+
+import baguchan.japaricraftmod.JapariCraftMod;
+import baguchan.japaricraftmod.entity.EntityFriend;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+
+@OnlyIn(Dist.CLIENT)
 public class GuiHandler {
 
-/*
-    @Nullable
-    public static GuiScreen getGui(FMLPlayMessages.OpenContainer container) {
-        int id = container.getAdditionalData().readInt();
+    public static GuiScreen openGui(FMLPlayMessages.OpenContainer openContainer) {
+        String guiId = openContainer.getId().toString();
 
-        return getGui(id);
-    }
+        if (guiId.equals("japaricraftmod:friends_inventory")) {
+            int entityId = openContainer.getAdditionalData().readInt();
+            EntityPlayer clientPlayer = JapariCraftMod.PROXY.getPlayerEntity();
 
-    @OnlyIn(Dist.CLIENT)
-    private static void openGui(int gui) {
-        Minecraft.getInstance().displayGuiScreen(getGui(gui));
-    }
-*/
-
-
-    /*public static GuiScreen getGui(int id) {
-        switch (GUI.values[id]) {
-            case FRIENDS_INVENTORY:
-                return new FriendInventoryGui(data);
-            default:
-                break;
+            Entity target = clientPlayer.world.getEntityByID(entityId);
+            if (!(target instanceof EntityFriend))
+                return null;
+            EntityFriend friend = (EntityFriend) target;
+            return new FriendInventoryGui(clientPlayer, friend);
         }
+
+
         return null;
     }
-
-    public enum GUI {
-
-        FRIENDS_INVENTORY;
-
-        public static final GUI[] values = values();
-
-    }*/
-
 }

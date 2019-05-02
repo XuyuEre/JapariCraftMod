@@ -1,21 +1,23 @@
 package baguchan.japaricraftmod.entity;
 
 import baguchan.japaricraftmod.JapariCraftMod;
-import baguchan.japaricraftmod.gui.FriendInventoryGui;
+import baguchan.japaricraftmod.gui.ContainerFriendInventory;
 import baguchan.japaricraftmod.gui.FriendMobNBTs;
 import baguchan.japaricraftmod.gui.InventoryFriendEquipment;
 import baguchan.japaricraftmod.gui.InventoryFriendMain;
 import baguchan.japaricraftmod.init.JapariItems;
 import com.google.common.collect.Sets;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.Particles;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -29,14 +31,17 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class EntityFriend extends EntityTameable {
+public class EntityFriend extends EntityTameable implements IInteractionObject {
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
 
@@ -207,7 +212,14 @@ public class EntityFriend extends EntityTameable {
             }
             if (player.isSneaking() && !this.isSitting()) {
 
-                Minecraft.getInstance().displayGuiScreen(new FriendInventoryGui(player, this));
+                if (player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
+
+                    EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+
+
+                    NetworkHooks.openGui(entityPlayerMP, this, buf -> buf.writeInt(this.getEntityId()));
+
+                }
                 if (!this.world.isRemote) {
 
                     this.aiSit.setSitting(!this.isSitting());
@@ -582,5 +594,17 @@ public class EntityFriend extends EntityTameable {
         ATTACKING,
         EATING,
         BOW_AND_ARROW
+    }
+
+    @Override
+    public Container createContainer(InventoryPlayer inventory, EntityPlayer player) {
+        return new ContainerFriendInventory(this, player);
+    }
+
+    @Override
+    public String getGuiID() {
+
+        return "japaricraftmod:friends_inventory";
+
     }
 }
