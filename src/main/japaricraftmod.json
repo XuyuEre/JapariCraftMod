@@ -1,7 +1,7 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/japaricraftmod",
   "1.13.2": {
-    "0.1.2": "smooth size change(example:when friends swiming)",
+    "0.2.0": "smooth size change(example:when friends swiming) and add japarimankelp and new friend",
     "0.1.1": "add first swiming friends",
     "0.1.0": "first alpha release"
   },
@@ -16,7 +16,7 @@
     "1.11.2-latest": "2.4.2",
     "1.12.2-recommended": "5.1.0",
     "1.12.2-latest": "5.1.0",
-    "1.13.2-recommended": "0.1.2",
-    "1.13.2-latest": "0.1.2"
+    "1.13.2-recommended": "0.2.0",
+    "1.13.2-latest": "0.2.0"
   }
 }
