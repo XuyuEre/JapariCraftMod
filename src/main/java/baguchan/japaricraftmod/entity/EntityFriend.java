@@ -30,6 +30,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
@@ -44,6 +45,7 @@ import java.util.Set;
 public class EntityFriend extends EntityTameable implements IInteractionObject {
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntityFriend.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> LIMITLEVEL = EntityDataManager.createKey(EntityFriend.class, DataSerializers.VARINT);
 
     private static final Set<Item> Heal_ITEMS = Sets.newHashSet(JapariItems.JAPARIMAN, JapariItems.JAPARIMAN_APPLE, JapariItems.JAPARIMAN_COCOA);
 
@@ -82,6 +84,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
         this.dataManager.register(EntityFriend.dataEXPValue, Float.valueOf(0));
         this.dataManager.register(ATTACKING, Boolean.FALSE);
         this.dataManager.register(SLEEPING, Boolean.FALSE);
+        this.dataManager.register(LIMITLEVEL, 0);
     }
 
     @Override
@@ -134,8 +137,20 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
      * フレンズの経験値関係
      */
     public void addExperience(float value) {
-        friendPoint += value;
+        //Friends will not level up if they reach limit
+        if (this.getLimit() < 16) {
+            friendPoint += value;
+        }
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
+    }
+
+    public int getLimit() {
+        return MathHelper.clamp(this.dataManager.get(LIMITLEVEL).intValue(), 0, 16);
+    }
+
+
+    public void setLimit(int p_191997_1_) {
+        this.dataManager.set(LIMITLEVEL, Integer.valueOf(p_191997_1_));
     }
 
     @Override
@@ -207,6 +222,41 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
                         return true;
 
+                    } else if (this.isOwner(player) && stack.getItem() == JapariItems.WILDLIBERATION_POTION) {
+
+                        //Friends will not level up if they reach limit
+                        if (this.getLimit() < 16) {
+                            if (!player.isCreative()) {
+
+                                stack.shrink(1);
+
+                                player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
+
+                            }
+
+                            this.heal((float) itemfood.getHealAmount(stack));
+                            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth() + 1.0D + rand.nextInt(2));
+                            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue() + 0.2D);
+
+                            this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, this.getSoundVolume(), this.getSoundPitch());
+
+                            eattick = 20;
+
+                            this.setLimit(this.getLimit() + 1);
+
+                            for (int i = 0; i < 7; ++i) {
+
+                                double d0 = this.rand.nextGaussian() * 0.02D;
+                                double d1 = this.rand.nextGaussian() * 0.02D;
+                                double d2 = this.rand.nextGaussian() * 0.02D;
+
+                                this.world.spawnParticle(Particles.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+                                //JapariCraftMod.proxy.spawnParticle(JapariParticleTypes.SANDSTAR, world, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, d0, d1, d2);
+                            }
+                        } else {
+                            player.sendStatusMessage(new TextComponentTranslation("friends.limit"), true);
+                            this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, this.getSoundVolume(), this.getSoundPitch());
+                        }
                     }
                 }
             }
@@ -304,14 +354,23 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
         }
 
 
+        if (friendPoint >= 160) {
+            //Friends will not level up if they reach limit
+            if (this.getLimit() < 16) {
+                this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth() + 1.0D + rand.nextInt(3));
+                this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue() + 0.2D);
+                this.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, this.getSoundVolume(), 1.2F);
 
+                friendPoint = 0;
+                dataManager.set(EntityFriend.dataEXPValue, friendPoint);
 
-        if (friendPoint >= 180 && ticksExisted % 5 == 0) {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth() + 1.0D + rand.nextInt(3));
-            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue() + 0.5D);
-            this.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, this.getSoundVolume(), 1.2F);
-            friendPoint = 0;
-            dataManager.set(EntityFriend.dataEXPValue, friendPoint);
+                this.setLimit(this.getLimit() + 1);
+
+                for (int i = 0; i < 7; ++i) {
+                    this.world.spawnParticle(Particles.HAPPY_VILLAGER, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0, 0.0, 0.0);
+                    //JapariCraftMod.proxy.spawnParticle(JapariParticleTypes.SANDSTAR, world, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width);
+                }
+            }
         }
     }
 
@@ -340,6 +399,12 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
             if (isHealItem(friendsstack)) {
                 return friendsstack;
+            } else {
+                friendsstack = getInventoryFriendEquipment().getOffhandItem();
+
+                if (isHealItem(friendsstack)) {
+                    return friendsstack;
+                }
             }
         }
         return ItemStack.EMPTY;
@@ -423,6 +488,11 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
                 itemStack = this.getInventoryFriendEquipment().getLegItem();
 
                 break;
+            case OFFHAND:
+
+                itemStack = this.getInventoryFriendEquipment().getOffhandItem();
+
+                break;
             default:
                 itemStack = ItemStack.EMPTY;
 
@@ -455,6 +525,13 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
             case LEGS:
                 this.getInventoryFriendEquipment().setInventorySlotContents(3, stack);
 
+                break;
+            case OFFHAND:
+                this.getInventoryFriendEquipment().setInventorySlotContents(4, stack);
+
+                break;
+            default:
+                // none
                 break;
         }
     }

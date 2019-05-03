@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 
 import java.util.Set;
 
-public class EntityKouteiPenguin extends EntitySwimFriend {
+public class EntityOtter extends EntitySwimFriend {
     private static final Set<Item> Heal_ITEMS = Sets.newHashSet(JapariItems.JAPARIMAN, JapariItems.JAPARIMAN_APPLE, JapariItems.JAPARIMAN_COCOA, Items.COD, Items.SALMON, Items.TROPICAL_FISH, JapariItems.JAPARIMAN_KELP);
 
-    public EntityKouteiPenguin(World p_i48574_2_) {
-        super(JapariEntity.KOUTEI_PENGUIN, p_i48574_2_);
+    public EntityOtter(World p_i48574_2_) {
+        super(JapariEntity.OTTER, p_i48574_2_);
         this.setSize(0.59F, 1.7F);
     }
 
@@ -51,7 +51,7 @@ public class EntityKouteiPenguin extends EntitySwimFriend {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.245D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
@@ -77,7 +77,6 @@ public class EntityKouteiPenguin extends EntitySwimFriend {
                 this.setSize(f, f1);
             }
         }
-
     }
 
     public boolean isHealItem(ItemStack stack) {

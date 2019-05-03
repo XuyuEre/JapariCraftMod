@@ -1,14 +1,14 @@
 package baguchan.japaricraftmod.item;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.init.*;
-import net.minecraft.item.*;
-import net.minecraft.potion.*;
-import net.minecraft.world.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 
 public class ItemSandStarJapariman extends ItemJapariman {
     public ItemSandStarJapariman(Properties group) {
-        super(4, 0.62F, false, group);
+        super(4, 0.44F, false, group);
     }
 
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {

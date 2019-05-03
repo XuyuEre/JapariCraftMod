@@ -29,7 +29,7 @@
       "conditions": {
         "items": [
           {
-            "item": "japaricraftmod:japarimancocoa"
+            "item": "japaricraftmod:japariman_cocoa"
           }
         ]
       }
@@ -39,17 +39,7 @@
       "conditions": {
         "items": [
           {
-            "item": "japaricraftmod:japarimanapple"
-          }
-        ]
-      }
-    },
-    "japarimanfruit": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "japaricraftmod:japarimanfruit"
+            "item": "japaricraftmod:japariman_apple"
           }
         ]
       }

@@ -19,9 +19,10 @@ import java.util.List;
 public class JapariItems {
     private static final NonNullList<Item> ITEMS = NonNullList.create();
 
-    public static final Item JAPARIMAN = new ItemJapariman(4, 0.62F, false, (new Item.Properties()).group(ItemGroup.FOOD));
-    public static final Item JAPARIMAN_APPLE = new ItemJapariman(6, 0.74F, false, (new Item.Properties()).group(ItemGroup.FOOD));
-    public static final Item JAPARIMAN_COCOA = new ItemJapariman(5, 0.64F, false, (new Item.Properties()).group(ItemGroup.FOOD));
+    public static final Item JAPARIMAN = new ItemJapariman(4, 0.32F, false, (new Item.Properties()).group(ItemGroup.FOOD));
+    public static final Item JAPARIMAN_APPLE = new ItemJapariman(6, 0.44F, false, (new Item.Properties()).group(ItemGroup.FOOD));
+    public static final Item JAPARIMAN_COCOA = new ItemJapariman(4, 0.32F, false, (new Item.Properties()).group(ItemGroup.FOOD));
+    public static final Item JAPARIMAN_KELP = new ItemJapariman(4, 0.3F, false, (new Item.Properties()).group(ItemGroup.FOOD));
     public static final Item JAPARIMAN_SANDSTAR = new ItemSandStarJapariman((new Item.Properties()).group(ItemGroup.FOOD));
     public static final Item SANDSTAR = new Item((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item WILDLIBERATION_POTION = new ItemWildLeberationPotion((new Item.Properties()).group(ItemGroup.MISC));
@@ -58,12 +59,11 @@ public class JapariItems {
 
     @SubscribeEvent
     public static void registerItems(IForgeRegistry<Item> registry) {
-
-
         register(registry, JAPARIMAN, "japariman");
         register(registry, JAPARIMAN_APPLE, "japariman_apple");
         register(registry, JAPARIMAN_COCOA, "japariman_cocoa");
         register(registry, JAPARIMAN_SANDSTAR, "japariman_sandstar");
+        register(registry, JAPARIMAN_KELP, "japariman_kelp");
         register(registry, SANDSTAR, "sandstar_fragment");
         register(registry, WILDLIBERATION_POTION, "wildliberation_potion");
         register(registry, SPAWNEGG_SERVAL, "spawnegg_serval");

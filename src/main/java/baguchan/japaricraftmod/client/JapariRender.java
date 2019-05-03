@@ -1,8 +1,10 @@
 package baguchan.japaricraftmod.client;
 
 import baguchan.japaricraftmod.client.render.RenderKouteiPenguin;
+import baguchan.japaricraftmod.client.render.RenderOtter;
 import baguchan.japaricraftmod.client.render.RenderServal;
 import baguchan.japaricraftmod.entity.EntityKouteiPenguin;
+import baguchan.japaricraftmod.entity.EntityOtter;
 import baguchan.japaricraftmod.entity.EntityServal;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,5 +15,6 @@ public class JapariRender {
     public static void entityRender() {
         RenderingRegistry.registerEntityRenderingHandler(EntityServal.class, RenderServal::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityKouteiPenguin.class, RenderKouteiPenguin::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityOtter.class, RenderOtter::new);
     }
 }

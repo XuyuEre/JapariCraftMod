@@ -1,13 +1,13 @@
 package baguchan.japaricraftmod.init;
 
-import baguchan.japaricraftmod.*;
-import com.google.common.collect.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.init.*;
-import net.minecraftforge.fml.common.registry.*;
-import net.minecraftforge.registries.*;
+import baguchan.japaricraftmod.JapariCraftMod;
+import com.google.common.collect.Maps;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Items;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.*;
+import java.util.Map;
 
 public class ModVillagers {
     //修正予定
@@ -18,6 +18,7 @@ public class ModVillagers {
     public void init(IForgeRegistry<VillagerRegistry.VillagerProfession> registry) {
 
         registry.register(japariProfession);
+
         VillagerRegistry.VillagerCareer career_zookeeper = new VillagerRegistry.VillagerCareer(japariProfession, "zookeeper");
         career_zookeeper.addTrade(1,
                 new EntityVillager.EmeraldForItems(Items.WHEAT, new EntityVillager.PriceInfo(18, 22)),
