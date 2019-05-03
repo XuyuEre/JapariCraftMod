@@ -25,6 +25,7 @@ public class JapariEntity {
     public static void registerEntity(IForgeRegistry<EntityType<?>> event) {
         event.register(SERVAL);
         event.register(KOUTEI_PENGUIN);
+        event.register(OTTER);
     }
 
     public static void spawnEntity() {
@@ -43,7 +44,9 @@ public class JapariEntity {
                 biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(SERVAL, 6, 2, 3));
 
             }
-
+            if (types.contains(JUNGLE) && !types.contains(NETHER) && !biome.getSpawns(EnumCreatureType.CREATURE).isEmpty()) {
+                biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(OTTER, 6, 2, 3));
+            }
         }
 
     }

@@ -43,6 +43,16 @@
           }
         ]
       }
+    },
+    "japarimankelp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "japaricraftmod:japariman_kelp"
+          }
+        ]
+      }
     }
   },
   "requirements": [
@@ -50,7 +60,7 @@
       "japariman",
       "japarimancocoa",
       "japarimanapple",
-      "japarimanfruit"
+      "japarimankelp"
     ]
   ]
 }

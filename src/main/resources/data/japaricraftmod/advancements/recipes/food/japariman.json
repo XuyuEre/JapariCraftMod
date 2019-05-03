@@ -16,7 +16,8 @@
     "recipes": [
       "japaricraftmod:japariman",
       "japaricraftmod:japariman_apple",
-      "japaricraftmod:japariman_cocoa"
+      "japaricraftmod:japariman_cocoa",
+      "japaricraftmod:japariman_kelp"
     ]
   }
 }

@@ -28,6 +28,7 @@ public class JapariItems {
     public static final Item WILDLIBERATION_POTION = new ItemWildLeberationPotion((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SPAWNEGG_SERVAL = new ItemSpawnEgg(JapariEntity.SERVAL, 16703405, 6375001, new Item.Properties().group(ItemGroup.MISC));
     public static final Item SPAWNEGG_KOUTEIPENGUIN = new ItemSpawnEgg(JapariEntity.KOUTEI_PENGUIN, 2243405, 7375001, new Item.Properties().group(ItemGroup.MISC));
+    public static final Item SPAWNEGG_OTTER = new ItemSpawnEgg(JapariEntity.OTTER, 0xADADAD, 0x949494, new Item.Properties().group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -68,6 +69,7 @@ public class JapariItems {
         register(registry, WILDLIBERATION_POTION, "wildliberation_potion");
         register(registry, SPAWNEGG_SERVAL, "spawnegg_serval");
         register(registry, SPAWNEGG_KOUTEIPENGUIN, "spawnegg_kouteipenguin");
+        register(registry, SPAWNEGG_OTTER, "spawnegg_otter");
     }
 
 }
