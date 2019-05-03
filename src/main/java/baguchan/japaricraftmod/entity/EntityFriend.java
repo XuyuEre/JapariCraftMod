@@ -1,5 +1,6 @@
 package baguchan.japaricraftmod.entity;
 
+import baguchan.japaricraftmod.JapariConfig;
 import baguchan.japaricraftmod.JapariCraftMod;
 import baguchan.japaricraftmod.gui.ContainerFriendInventory;
 import baguchan.japaricraftmod.gui.FriendMobNBTs;
@@ -69,7 +70,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24D);
     }
 
     @Nullable
@@ -138,7 +139,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
      */
     public void addExperience(float value) {
         //Friends will not level up if they reach limit
-        if (this.getLimit() < 16) {
+        if (this.getLimit() < this.maxLimit()) {
             friendPoint += value;
         }
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
@@ -151,6 +152,10 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
     public void setLimit(int p_191997_1_) {
         this.dataManager.set(LIMITLEVEL, Integer.valueOf(p_191997_1_));
+    }
+
+    private int maxLimit() {
+        return JapariConfig.COMMON.levelupLimit.get();
     }
 
     @Override
@@ -225,7 +230,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
                     } else if (this.isOwner(player) && stack.getItem() == JapariItems.WILDLIBERATION_POTION) {
 
                         //Friends will not level up if they reach limit
-                        if (this.getLimit() < 16) {
+                        if (this.getLimit() < this.maxLimit()) {
                             if (!player.isCreative()) {
 
                                 stack.shrink(1);
@@ -330,6 +335,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
     }
 
+
     public void livingTick() {
         if (this.world.isRemote) {
             this.eattick = Math.max(0, this.eattick - 1);
@@ -356,7 +362,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
         if (friendPoint >= 160) {
             //Friends will not level up if they reach limit
-            if (this.getLimit() < 16) {
+            if (this.getLimit() < this.maxLimit()) {
                 this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth() + 1.0D + rand.nextInt(3));
                 this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue() + 0.2D);
                 this.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, this.getSoundVolume(), 1.2F);
