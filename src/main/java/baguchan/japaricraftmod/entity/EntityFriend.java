@@ -348,7 +348,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
             }
         }
         //やばい時はじゃぱりまんを食べる
-        if (getHealth() < getMaxHealth() / 1.4 && ticksExisted % 20 == 0) {
+        if (getHealth() < getMaxHealth() / 1.2 && ticksExisted % 30 == 0) {
             eatJapariman();
         }
 

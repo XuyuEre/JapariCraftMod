@@ -7,6 +7,7 @@
   "item.japaricraftmod.japariman_kelp": "じゃぱりまん 昆布味",
   "item.japaricraftmod.spawnegg_serval": "サーバルのスポーンエッグ",
   "item.japaricraftmod.spawnegg_kouteipenguin": "コウテイペンギンのスポーンエッグ",
+  "item.japaricraftmod.spawnegg_otter": "カワウソのスポーンエッグ",
 
   "block.japaricraftmod.cracked_sandstar": "ひびの入ったサンドスター",
   "block.japaricraftmod.sandstar_block": "サンドスター",
@@ -15,5 +16,7 @@
   "entity.minecraft.villager.zookeeper": "飼育員",
   "entity.japaricraftmod.serval": "サーバル（フレンズ）",
   "entity.japaricraftmod.koutei_penguin": "コウテイペンギン（フレンズ）",
-  "entity.japaricraftmod.otter": "カワウソ（フレンズ）"
+  "entity.japaricraftmod.otter": "カワウソ（フレンズ）",
+  "advancements.japaricraftmod.root.title": "じゃぱりくらふともっど",
+  "advancements.japaricraftmod.root.description": "じゃぱりまんをつくる"
 }

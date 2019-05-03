@@ -1,12 +1,16 @@
 package baguchan.japaricraftmod.client.model;
 
-import baguchan.japaricraftmod.entity.*;
-import net.minecraft.client.renderer.entity.model.*;
-import net.minecraft.entity.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraftforge.api.distmarker.*;
-import org.lwjgl.opengl.*;
+import baguchan.japaricraftmod.entity.EntityServal;
+import net.minecraft.client.renderer.entity.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelServal extends ModelBase {
@@ -264,7 +268,12 @@ public class ModelServal extends ModelBase {
             this.hand_r.rotateAngleX = -0.9F;
         }
 
-        if (!entityServal.isSitting() && entityServal.getArmPose() == EntityServal.ArmPose.ATTACKING) {
+        if (entityServal.isJumpAttack()) {
+            this.head.rotateAngleX = -((float) Math.PI / 2F);
+            this.head.rotateAngleY = 0.0F;
+            this.hand_r.rotateAngleX = -3.141592653589793F;
+            this.hand_l.rotateAngleX = -3.141592653589793F;
+        } else if (!entityServal.isSitting() && entityServal.getArmPose() == EntityServal.ArmPose.ATTACKING) {
             this.head.rotateAngleX = -0.2F + (headPitch * 0.017453292F);
             this.body.rotateAngleX = 0.2F;
             this.leg_r.rotateAngleX = -0.2F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / f;

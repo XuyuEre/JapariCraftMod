@@ -6,6 +6,7 @@
   "item.japaricraftmod.japariman_sandstar": "Japariman SandStar",
   "item.japaricraftmod.spawnegg_serval": "SpawnEgg Serval",
   "item.japaricraftmod.spawnegg_kouteipenguin": "SpawnEgg Emperor Penguin",
+  "item.japaricraftmod.spawnegg_otter": "SpawnEgg Otter",
 
   "block.japaricraftmod.cracked_sandstar": "Cracked SandStar",
   "block.japaricraftmod.sandstar_block": "SandStar Block",
@@ -14,5 +15,7 @@
   "entity.minecraft.villager.zookeeper": "Zoo Keeper",
   "entity.japaricraftmod.serval": "Serval(Friends)",
   "entity.japaricraftmod.koutei_penguin": "Emperor Penguin(Friends)",
-  "entity.japaricraftmod.otter": "Otter(Friends)"
+  "entity.japaricraftmod.otter": "Otter(Friends)",
+  "advancements.japaricraftmod.root.title": "JapariCraftMod",
+  "advancements.japaricraftmod.root.description": "Make Japariman"
 }

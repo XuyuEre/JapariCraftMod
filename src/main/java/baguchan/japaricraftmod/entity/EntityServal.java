@@ -1,10 +1,9 @@
 package baguchan.japaricraftmod.entity;
 
+import baguchan.japaricraftmod.entity.ai.EntityAIAttackDirect;
 import baguchan.japaricraftmod.entity.ai.EntityAIAttackSweep;
 import baguchan.japaricraftmod.init.JapariEntity;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.AbstractGroupFish;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +17,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,6 +27,7 @@ public class EntityServal extends EntityFriend {
     private static final DataParameter<Boolean> BEGGING = EntityDataManager.createKey(EntityServal.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> STRETCHING = EntityDataManager.createKey(EntityServal.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> JUMPATTACK = EntityDataManager.createKey(EntityServal.class, DataSerializers.BOOLEAN);
 
     private float headRotationCourse;
     private float headRotationCourseOld;
@@ -45,19 +46,20 @@ public class EntityServal extends EntityFriend {
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, this.aiSit);
-        this.tasks.addTask(2, new EntityAIAttackSweep(this, 1.16D, true));
-        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(4, new EntityAIFollowOwner(this, 1.1D, 10.0F, 2.0F) {
+        this.tasks.addTask(2, new EntityAIAttackDirect(this, 0.6F));
+        this.tasks.addTask(3, new EntityAIAttackSweep(this, 1.16D, true));
+        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.1D, 10.0F, 2.0F) {
             @Override
             public boolean shouldExecute() {
                 return !isPlayerSleeping() && super.shouldExecute();
             }
         });
 
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.9D));
+        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.9D));
         //this.tasks.addTask(7, new EntityAIServalBeg(this, 8.0F));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F, 1.0F));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityCreature.class, 8.0F));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F, 1.0F));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityCreature.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
@@ -70,6 +72,7 @@ public class EntityServal extends EntityFriend {
         super.registerData();
         this.dataManager.register(BEGGING, Boolean.FALSE);
         this.dataManager.register(STRETCHING, Boolean.FALSE);
+        this.dataManager.register(JUMPATTACK, Boolean.FALSE);
     }
 
 
@@ -81,6 +84,48 @@ public class EntityServal extends EntityFriend {
     }
 
     @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        double i = 1.0D;
+        //when serval doing jampAttack,Increase the damage done
+        if (this.isJumpAttack()) {
+            i = 1.3D;
+        }
+
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * i));
+
+        if (flag) {
+            this.applyEnchantments(this, entityIn);
+
+            if (!entityIn.isNonBoss()) {
+                addExperience(3 + this.rand.nextInt(5));
+            } else {
+                addExperience(1 + this.rand.nextInt(3));
+            }
+        }
+
+        return flag;
+    }
+
+    public void applyEntityCollision(Entity entityIn) {
+        super.applyEntityCollision(entityIn);
+        EntityLivingBase entityLivingBase = this.getAttackTarget();
+        if (entityLivingBase != null) {
+            if (this.isJumpAttack() && entityLivingBase == entityIn) {
+
+                this.dealDamage((EntityLivingBase) entityIn);
+            }
+        }
+    }
+
+    protected void dealDamage(EntityLivingBase entityIn) {
+        if (this.getDistanceSq(entityIn) < this.width + 0.05 && entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1.6F))) {
+            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            this.applyEnchantments(this, entityIn);
+        }
+
+    }
+
+    @Override
     public void setTamed(boolean tamed) {
         super.setTamed(tamed);
 
@@ -88,13 +133,13 @@ public class EntityServal extends EntityFriend {
     }
 
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeAdditional(NBTTagCompound compound) {
         super.writeAdditional(compound);
         compound.setBoolean("Stretching", this.isStretching());
     }
 
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readAdditional(NBTTagCompound compound) {
         super.readAdditional(compound);
         this.setStretching(compound.getBoolean("Stretching"));
     }
@@ -163,6 +208,14 @@ public class EntityServal extends EntityFriend {
         }
     }
 
+    public boolean isJumpAttack() {
+        return this.dataManager.get(JUMPATTACK);
+    }
+
+    public void setJumpAttack(boolean jumping) {
+        this.dataManager.set(JUMPATTACK, jumping);
+    }
+
     @OnlyIn(Dist.CLIENT)
     public float getInterestedAngle(float p_70917_1_) {
         return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * (float) Math.PI;
@@ -192,16 +245,19 @@ public class EntityServal extends EntityFriend {
         return null;//なにも落とさない
     }
 
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float damage) {
+    public void fall(float distance, float damageMultiplier) {
+        int i = MathHelper.ceil((distance * 0.5F - 4.0F) * damageMultiplier);
 
-        if (source == DamageSource.FALL) {
-
-            damage *= 0.4F;
-
+        int i2 = MathHelper.ceil((distance * 0.5F - 8.0F) * damageMultiplier);
+        if (!this.isJumpAttack()) {
+            if (i > 0) {
+                this.attackEntityFrom(DamageSource.FALL, (float) i);
+            }
+        } else {
+            if (i2 > 0) {
+                this.attackEntityFrom(DamageSource.FALL, (float) i2);
+            }
         }
-
-        return super.attackEntityFrom(source, damage);
     }
 
 

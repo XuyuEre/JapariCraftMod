@@ -106,6 +106,9 @@ public class RenderServal extends RenderLiving<EntityServal> {
                 double d3 = entityLiving.motionX * vec3d.z - entityLiving.motionZ * vec3d.x;
                 GlStateManager.rotatef((float) (Math.signum(d3) * Math.acos(d2)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             }
+        } else if (!entityLiving.isElytraFlying() && entityLiving.isJumpAttack()) {
+            GlStateManager.rotatef((float) (entityLiving.motionY * 20D + 90F), -1F, 0.0F, 0.0F);
+
         } else if (f > 0.0F) {
             super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
             float f3 = this.lerp(entityLiving.rotationPitch, -90.0F - entityLiving.rotationPitch, f);
