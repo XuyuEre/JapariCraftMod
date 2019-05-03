@@ -46,7 +46,7 @@ public class EntityServal extends EntityFriend {
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, this.aiSit);
-        this.tasks.addTask(2, new EntityAIAttackDirect(this, 0.6F));
+        this.tasks.addTask(2, new EntityAIAttackDirect(this, 0.58F));
         this.tasks.addTask(3, new EntityAIAttackSweep(this, 1.16D, true));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.1D, 10.0F, 2.0F) {
@@ -118,7 +118,7 @@ public class EntityServal extends EntityFriend {
     }
 
     protected void dealDamage(EntityLivingBase entityIn) {
-        if (this.getDistanceSq(entityIn) < this.width + 0.05 && entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1.6F))) {
+        if (entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1.6F))) {
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.applyEnchantments(this, entityIn);
         }
@@ -144,15 +144,25 @@ public class EntityServal extends EntityFriend {
         this.setStretching(compound.getBoolean("Stretching"));
     }
 
-    public void updateSize() {
+    private void updateSize() {
         float f;
         float f1;
         if (this.isPlayerSleeping()) {
             f = 0.2F;
             f1 = 0.2F;
-        } else {
+        } else if (this.isJumpAttack()) {
             f = 0.6F;
             f1 = 0.6F;
+        } else {
+            f = 0.6F;
+            f1 = 1.6F;
+        }
+        if (f != this.width || f1 != this.height) {
+            AxisAlignedBB axisalignedbb = this.getBoundingBox();
+            axisalignedbb = new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double) f, axisalignedbb.minY + (double) f1, axisalignedbb.minZ + (double) f);
+            if (this.world.isCollisionBoxesEmpty(null, axisalignedbb)) {
+                this.setSize(f, f1);
+            }
         }
 
         if (f != this.width || f1 != this.height) {
@@ -169,6 +179,8 @@ public class EntityServal extends EntityFriend {
     public void tick() {
         super.tick();
         this.headRotationCourseOld = this.headRotationCourse;
+
+        this.updateSize();
 
         if (this.isBegging()) {
             this.headRotationCourse += (1.0F - this.headRotationCourse) * 0.4F;

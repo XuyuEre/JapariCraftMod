@@ -41,7 +41,7 @@ public class EntityAIAttackDirect extends EntityAIBase {
                 if (!this.leaper.onGround) {
                     return false;
                 } else {
-                    return this.hasEnoughJump(leapTarget) && this.leaper.getRNG().nextInt(8) == 0;
+                    return this.hasEnoughJump(leapTarget) && this.leaper.getRNG().nextInt(6) == 0;
                 }
             } else {
                 return false;
