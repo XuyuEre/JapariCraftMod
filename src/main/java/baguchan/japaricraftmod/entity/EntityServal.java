@@ -118,7 +118,7 @@ public class EntityServal extends EntityFriend {
     }
 
     protected void dealDamage(EntityLivingBase entityIn) {
-        if (entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1.6F))) {
+        if (entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1.65F))) {
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.applyEnchantments(this, entityIn);
         }
@@ -260,7 +260,7 @@ public class EntityServal extends EntityFriend {
     public void fall(float distance, float damageMultiplier) {
         int i = MathHelper.ceil((distance * 0.5F - 4.0F) * damageMultiplier);
 
-        int i2 = MathHelper.ceil((distance * 0.5F - 8.0F) * damageMultiplier);
+        int i2 = MathHelper.ceil((distance * 0.5F - 6.0F) * damageMultiplier);
         if (!this.isJumpAttack()) {
             if (i > 0) {
                 this.attackEntityFrom(DamageSource.FALL, (float) i);
