@@ -231,9 +231,6 @@ public class ModelServal extends ModelBase {
 
     //下は特殊なモデルを動かすのに必須
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        if (!(entityIn instanceof EntityServal)) {
-            return;
-        }
 
         EntityServal entityServal = (EntityServal) entityIn;
         this.head.rotateAngleY = netHeadYaw * 0.017453292F;

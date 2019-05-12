@@ -1,7 +1,6 @@
 package baguchan.japaricraftmod.client.render;
 
 import baguchan.japaricraftmod.JapariCraftMod;
-import baguchan.japaricraftmod.client.model.ModelKouteiPenguin;
 import baguchan.japaricraftmod.client.model.ModelOtter;
 import baguchan.japaricraftmod.entity.EntityOtter;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,6 +9,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.model.ModelBiped;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
@@ -58,6 +58,17 @@ public class RenderOtter extends RenderLiving<EntityOtter> {
 
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelOtter) this.livingEntityRenderer.getMainModel()).getArmForSide(p_191361_1_).postRender(0.0625F);
+            }
+
+            @Override
+            public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                p_188359_1_();
+                super.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+
+            }
+
+            void p_188359_1_() {
+                GlStateManager.translatef(0.0F, 0.1F, 0.0F);
             }
         });
     }
@@ -112,8 +123,8 @@ public class RenderOtter extends RenderLiving<EntityOtter> {
 
     }
 
-    public ModelKouteiPenguin getMainModel() {
-        return (ModelKouteiPenguin) super.getMainModel();
+    public ModelOtter getMainModel() {
+        return (ModelOtter) super.getMainModel();
     }
 
 }

@@ -7,6 +7,8 @@
   "item.japaricraftmod.spawnegg_serval": "SpawnEgg Serval",
   "item.japaricraftmod.spawnegg_kouteipenguin": "SpawnEgg Emperor Penguin",
   "item.japaricraftmod.spawnegg_otter": "SpawnEgg Otter",
+  "item.japaricraftmod.spawnegg_shoebill": "SpawnEgg Shoebill",
+  "item.japaricraftmod.spawnegg_squirre": "SpawnEgg Squirre",
 
   "block.japaricraftmod.cracked_sandstar": "Cracked SandStar",
   "block.japaricraftmod.sandstar_block": "SandStar Block",
@@ -16,6 +18,8 @@
   "entity.japaricraftmod.serval": "Serval(Friends)",
   "entity.japaricraftmod.koutei_penguin": "Emperor Penguin(Friends)",
   "entity.japaricraftmod.otter": "Otter(Friends)",
+  "entity.japaricraftmod.shoebill": "Shoebill(Friends)",
+  "entity.japaricraftmod.squirre": "Squirre(Friends)",
   "advancements.japaricraftmod.root.title": "JapariCraftMod",
   "advancements.japaricraftmod.root.description": "Make Japariman"
 }

@@ -84,11 +84,6 @@ public class ContainerFriendInventory extends Container {
                         }
                     }
                     return this.getSlotIndex() == 4;
-                  /*  if (item instanceof FriendsEquipment) {
-                        FriendsEquipment equip = (FriendsEquipment) item;
-                        return equip.getEquipmentType() == slotType;
-                    }*/
-
                 }
             });
         }

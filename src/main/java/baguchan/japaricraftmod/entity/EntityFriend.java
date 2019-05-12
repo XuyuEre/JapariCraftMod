@@ -70,7 +70,7 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20D);
     }
 
     @Nullable
@@ -107,10 +107,6 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
     public void readAdditional(NBTTagCompound compound) {
         super.readAdditional(compound);
 
-        /*this.getInventoryFriendMain().readInventoryFromNBT(compound.getTagList(FriendMobNBTs.ENTITY_FRIEND_INVENTORY, 10));
-
-        this.getInventoryFriendEquipment().readInventoryFromNBT(compound.getTagList(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, 10));
-*/
         this.getInventoryFriendMain().readInventoryFromNBT(compound.getList(FriendMobNBTs.ENTITY_FRIEND_INVENTORY, 10));
         this.getInventoryFriendEquipment().readInventoryFromNBT(compound.getList(FriendMobNBTs.ENTITY_FRIEND_EQUIPMENT, 10));
 
@@ -118,6 +114,12 @@ public class EntityFriend extends EntityTameable implements IInteractionObject {
 
         dataManager.set(EntityFriend.dataEXPValue, friendPoint);
         this.setSleeping(compound.getBoolean("Sleeping"));
+    }
+
+    @Override
+    public void setTamed(boolean tamed) {
+        super.setTamed(tamed);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(26D);
     }
 
     @Override

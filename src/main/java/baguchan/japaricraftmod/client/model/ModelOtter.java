@@ -132,9 +132,6 @@ public class ModelOtter extends ModelBase {
     }
 
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        if (!(entityIn instanceof EntityOtter)) {
-            return;
-        }
 
         EntityOtter entityOtter = (EntityOtter) entityIn;
         boolean flag = ((EntityLivingBase) entityIn).getTicksElytraFlying() > 4;

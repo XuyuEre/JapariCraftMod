@@ -7,12 +7,10 @@ import baguchan.japaricraftmod.init.ModVillagers;
 import baguchan.japaricraftmod.proxy.ClientProxy;
 import baguchan.japaricraftmod.proxy.CommonProxy;
 import baguchan.japaricraftmod.proxy.ServerProxy;
-import baguchan.japaricraftmod.tileentity.JapariTileEntity;
 import baguchan.japaricraftmod.world.structure.JapariStructures;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,8 +62,6 @@ public class JapariCraftMod {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::onItemsRegistry);
 
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(EntityType.class, this::onEntityRegistry);
-
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, this::onTileEntityRegistry);
 
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerRegistry.VillagerProfession.class, this::onVillagerRegistry);
 
@@ -125,11 +121,6 @@ public class JapariCraftMod {
         JapariEntity.registerEntity(registry);
     }
 
-    @SubscribeEvent
-    public void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
-        IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
-        JapariTileEntity.registerEntity(registry);
-    }
 
     @SubscribeEvent
     public void onVillagerRegistry(final RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {

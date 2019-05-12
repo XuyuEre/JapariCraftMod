@@ -29,6 +29,8 @@ public class JapariItems {
     public static final Item SPAWNEGG_SERVAL = new ItemSpawnEgg(JapariEntity.SERVAL, 16703405, 6375001, new Item.Properties().group(ItemGroup.MISC));
     public static final Item SPAWNEGG_KOUTEIPENGUIN = new ItemSpawnEgg(JapariEntity.KOUTEI_PENGUIN, 2243405, 7375001, new Item.Properties().group(ItemGroup.MISC));
     public static final Item SPAWNEGG_OTTER = new ItemSpawnEgg(JapariEntity.OTTER, 0xADADAD, 0x949494, new Item.Properties().group(ItemGroup.MISC));
+    public static final Item SPAWNEGG_SHOEBILL = new ItemSpawnEgg(JapariEntity.SHOEBILL, 7375001, 10000, new Item.Properties().group(ItemGroup.MISC));
+    public static final Item SPAWNEGG_SQUIRRE = new ItemSpawnEgg(JapariEntity.SQUIRRE, 0xf0f5f0, 0x993300, new Item.Properties().group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -70,6 +72,8 @@ public class JapariItems {
         register(registry, SPAWNEGG_SERVAL, "spawnegg_serval");
         register(registry, SPAWNEGG_KOUTEIPENGUIN, "spawnegg_kouteipenguin");
         register(registry, SPAWNEGG_OTTER, "spawnegg_otter");
+        register(registry, SPAWNEGG_SHOEBILL, "spawnegg_shoebill");
+        register(registry, SPAWNEGG_SQUIRRE, "spawnegg_squirre");
     }
 
 }

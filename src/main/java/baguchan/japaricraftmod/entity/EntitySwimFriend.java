@@ -31,9 +31,6 @@ public class EntitySwimFriend extends EntityFriend {
         return true;
     }
 
-    protected float determineNextStepDistance() {
-        return this.distanceWalkedOnStepModified + 0.15F;
-    }
 
     protected PathNavigate createNavigator(World worldIn) {
         return new EntitySwimFriend.PathNavigater(this, worldIn);
@@ -270,7 +267,7 @@ public class EntitySwimFriend extends EntityFriend {
                 float f1 = (float) (this.speed * this.swimfriend.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
 
 
-                this.swimfriend.setAIMoveSpeed(this.swimfriend.getAIMoveSpeed() + (f1 - this.swimfriend.getAIMoveSpeed()) * 0.125F);
+                this.swimfriend.setAIMoveSpeed(this.swimfriend.getAIMoveSpeed() + (f1 - this.swimfriend.getAIMoveSpeed()) * 0.14F);
                 this.swimfriend.motionX += (double) this.swimfriend.getAIMoveSpeed() * d0 * 0.005D;
                 this.swimfriend.motionZ += (double) this.swimfriend.getAIMoveSpeed() * d2 * 0.005D;
                 this.swimfriend.motionY += (double) this.swimfriend.getAIMoveSpeed() * d1 * 0.1D;
