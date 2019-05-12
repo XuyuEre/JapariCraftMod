@@ -43,6 +43,7 @@ public class JapariEntity {
             if (types.contains(FOREST) && !types.contains(NETHER) && !biome.getSpawns(EnumCreatureType.CREATURE).isEmpty()) {
 
                 biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(SHOEBILL, 6, 2, 3));
+                biome.getSpawns(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(SQUIRRE, 6, 2, 3));
 
             }
             if (types.contains(SAVANNA) && !types.contains(NETHER) && !biome.getSpawns(EnumCreatureType.CREATURE).isEmpty()) {
