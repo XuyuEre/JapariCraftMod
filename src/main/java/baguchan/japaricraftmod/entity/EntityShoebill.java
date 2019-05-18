@@ -91,10 +91,10 @@ public class EntityShoebill extends EntityFriend implements IRangedAttackMob {
                 entityarrow = ((net.minecraft.item.ItemBow) this.getHeldItemOffhand().getItem()).customizeArrow(entityarrow);
             entityarrow.setEnchantmentEffectsFromEntity(this, distanceFactor);
             double d0 = target.posX - this.posX;
-            double d1 = target.getBoundingBox().minY + (double) (target.height / 3.0F) - entityarrow.posY;
+            double d1 = target.posY - entityarrow.posY;
             double d2 = target.posZ - this.posZ;
             double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-            entityarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
+            entityarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.4F + distanceFactor, 4.0F);
             this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.world.spawnEntity(entityarrow);
             this.getHeldItemOffhand().damageItem(1, this);
