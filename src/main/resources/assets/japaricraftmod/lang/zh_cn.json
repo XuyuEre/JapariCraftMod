@@ -1,0 +1,25 @@
+{
+  "item.japaricraftmod.sandstar_fragment": "砂之星碎片",
+  "item.japaricraftmod.japariman": "加帕里馒头",
+  "item.japaricraftmod.japariman_apple": "苹果加帕里馒头",
+  "item.japaricraftmod.japariman_cocoa": "可可加帕里馒头",
+  "item.japaricraftmod.japariman_sandstar": "砂之星加帕里馒头",
+  "item.japaricraftmod.spawnegg_serval": "薮猫 刷怪蛋",
+  "item.japaricraftmod.spawnegg_kouteipenguin": "帝企鹅 刷怪蛋",
+  "item.japaricraftmod.spawnegg_otter": "小爪水獭 刷怪蛋",
+  "item.japaricraftmod.spawnegg_shoebill": "鲸头鹳 刷怪蛋",
+  "item.japaricraftmod.spawnegg_squirre": "松鼠 刷怪蛋",
+
+  "block.japaricraftmod.cracked_sandstar": "裂砂之星块",
+  "block.japaricraftmod.sandstar_block": "砂之星块",
+  "block.japaricraftmod.woodenbox": "木框架",
+  "block.japaricraftmod.sandstar_lamp": "砂之星灯",
+  "entity.minecraft.villager.zookeeper": "动物园饲养员",
+  "entity.japaricraftmod.serval": "薮猫(Friends)",
+  "entity.japaricraftmod.koutei_penguin": "帝企鹅(Friends)",
+  "entity.japaricraftmod.otter": "小爪水獭(Friends)",
+  "entity.japaricraftmod.shoebill": "鲸头鹳(Friends)",
+  "entity.japaricraftmod.squirre": "松鼠(Friends)",
+  "advancements.japaricraftmod.root.title": "开始加帕里之旅",
+  "advancements.japaricraftmod.root.description": "为了与Friends成为朋友而制作加帕里馒头"
+}
